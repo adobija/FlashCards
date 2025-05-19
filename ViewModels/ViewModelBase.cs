@@ -1,8 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace FlashCards.ViewModels
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+public class ViewModelBase : INotifyPropertyChanged
 {
-    public class ViewModelBase : ObservableObject
-    {
-    }
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string propName = "") =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 }
