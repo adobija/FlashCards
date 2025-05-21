@@ -8,29 +8,27 @@ using System.Linq;
 public class LearningSessionViewModel : ViewModelBase
 {
     private Stack<Flashcard> activeStack;
-    private List<Flashcard> correct;
     private List<Flashcard> incorrect;
     private Random rand = new();
 
     public Flashcard Current { get; private set; }
     public bool IsAnswerVisible { get; private set; }
 
-    public IReadOnlyList<Flashcard> IncorrectFlashcards => incorrect;
-
     public LearningSessionViewModel(IEnumerable<Flashcard> flashcards)
     {
         activeStack = new Stack<Flashcard>(flashcards.OrderBy(_ => rand.Next()));
-        correct = new();
-        incorrect = new();
+        incorrect = new List<Flashcard>();
         NextCard();
     }
 
-    public void Reveal() => IsAnswerVisible = true;
+    public void Reveal()
+    {
+        IsAnswerVisible = true;
+        OnPropertyChanged(nameof(IsAnswerVisible));
+    }
 
     public void MarkCorrect()
     {
-        if (Current != null)
-            correct.Add(Current);
         NextCard();
     }
 
@@ -57,12 +55,5 @@ public class LearningSessionViewModel : ViewModelBase
     }
 
     public bool IsFinished => Current == null && incorrect.Count == 0;
-    public int CorrectCount => correct.Count;
-    public int IncorrectCount => incorrect.Count;
-
-    public void ExportIncorrect(string path)
-    {
-        var json = System.Text.Json.JsonSerializer.Serialize(IncorrectFlashcards);
-        File.WriteAllText(path, json);
-    }
 }
+

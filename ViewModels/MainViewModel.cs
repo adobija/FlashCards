@@ -12,6 +12,44 @@ public class MainViewModel : ViewModelBase
     public string NewQuestion { get; set; }
     public string NewAnswer { get; set; }
 
+    
+
+    // Nowe w³aœciwoœci do nauki:
+    private LearningSessionViewModel _learningSession;
+    public LearningSessionViewModel LearningSession
+    {
+        get => _learningSession;
+        private set
+        {
+            _learningSession = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool _isLearningActive;
+    public bool IsLearningActive
+    {
+        get => _isLearningActive;
+        set
+        {
+            if (_isLearningActive != value)
+            {
+                _isLearningActive = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    // Dodaj metody do startu nauki
+    public void StartLearning()
+    {
+        if (Flashcards.Count == 0)
+            return;
+
+        LearningSession = new LearningSessionViewModel(Flashcards);
+        IsLearningActive = true;
+    }
+
     public void AddFlashcard()
     {
         if (!string.IsNullOrWhiteSpace(NewQuestion) && !string.IsNullOrWhiteSpace(NewAnswer))
