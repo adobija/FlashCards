@@ -1,0 +1,44 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FlashCards.ViewModels"
+             x:Class="FlashCards.Views.StartView">
+  <Grid ColumnDefinitions="*,2*"
+        RowDefinitions="Auto,*"
+        Margin="20">
+    
+
+    <!-- Lewa kolumna: dodawanie fiszek -->
+    <StackPanel Grid.Column="0" Spacing="8">
+      <TextBlock Text="Pytanie:" />
+      <TextBox Text="{Binding NewQuestion, UpdateSourceTrigger=PropertyChanged}" />
+
+      <TextBlock Text="Odpowiedź:" />
+      <TextBox Text="{Binding NewAnswer, UpdateSourceTrigger=PropertyChanged}" />
+
+      <Button Content="Dodaj fiszkę" Click="OnAddFlashcardClick" />
+		<Separator />
+	  <Button Content="Załaduj z pliku" Click="OnLoadFromFileClick" />
+    </StackPanel>
+	  
+	  
+	  
+
+    <!-- Prawa kolumna: lista dodanych fiszek -->
+    <StackPanel Grid.Column="1" Spacing="8">
+      <TextBlock Text="Dodane fiszki:" FontWeight="Bold" FontSize="16"/>
+      <ItemsControl ItemsSource="{Binding Flashcards}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border BorderThickness="1" BorderBrush="Gray" Margin="4" Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Question}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Answer}" Foreground="Gray"/>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+
+  </Grid>
+</UserControl>
