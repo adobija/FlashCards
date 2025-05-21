@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	<AvaloniaUseCompiledBindings>true</AvaloniaUseCompiledBindings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,5 +24,18 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaXaml Update="Views\LearningSessionView.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\LearningSessionView.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>LearningSessionView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
