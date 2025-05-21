@@ -17,6 +17,7 @@
 
       <Button Content="Dodaj fiszkę" Click="OnAddFlashcardClick" />
 		<Separator />
+		<TextBlock Text="Załadowanie z pliku wiąże się z utratą aktualnych fiszek" />
 	  <Button Content="Załaduj z pliku" Click="OnLoadFromFileClick" />
     </StackPanel>
 	  
