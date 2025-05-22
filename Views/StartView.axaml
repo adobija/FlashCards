@@ -2,44 +2,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:FlashCards.ViewModels"
              x:Class="FlashCards.Views.StartView">
-  <Grid ColumnDefinitions="*,2*"
-        RowDefinitions="Auto,*"
-        Margin="20">
-    
+	<Grid ColumnDefinitions="*,2*" RowDefinitions="Auto,*" Margin="20">
+		<!-- Left Column -->
+		<StackPanel Grid.Column="0" Spacing="8">
+			<TextBlock Text="Question:"/>
+			<TextBox Text="{Binding NewQuestion}"/>
 
-    <!-- Lewa kolumna: dodawanie fiszek -->
-    <StackPanel Grid.Column="0" Spacing="8">
-      <TextBlock Text="Pytanie:" />
-      <TextBox Text="{Binding NewQuestion, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBlock Text="Answer:"/>
+			<TextBox Text="{Binding NewAnswer}"/>
 
-      <TextBlock Text="Odpowiedź:" />
-      <TextBox Text="{Binding NewAnswer, UpdateSourceTrigger=PropertyChanged}" />
+			<Button Content="Add Flashcard" Click="OnAddFlashcardClick"/>
+			<Separator/>
 
-      <Button Content="Dodaj fiszkę" Click="OnAddFlashcardClick" />
-		<Separator />
-		<TextBlock Text="Załadowanie z pliku wiąże się z utratą aktualnych fiszek" />
-	  <Button Content="Załaduj z pliku" Click="OnLoadFromFileClick" />
-    </StackPanel>
-	  
-	  
-	  
+			<Button Content="Load from JSON" Click="OnLoadFromJsonClick"/>
+			<Separator/>
 
-    <!-- Prawa kolumna: lista dodanych fiszek -->
-    <StackPanel Grid.Column="1" Spacing="8">
-      <TextBlock Text="Dodane fiszki:" FontWeight="Bold" FontSize="16"/>
-      <ItemsControl ItemsSource="{Binding Flashcards}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Border BorderThickness="1" BorderBrush="Gray" Margin="4" Padding="4">
-              <StackPanel>
-                <TextBlock Text="{Binding Question}" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Answer}" Foreground="Gray"/>
-              </StackPanel>
-            </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
-    </StackPanel>
+			<Button Content="Start Learning" Click="OnStartLearningClick"/>
+		</StackPanel>
 
-  </Grid>
+		<!-- Right Column -->
+		<StackPanel Grid.Column="1" Spacing="8">
+			<TextBlock Text="Flashcards:" FontWeight="Bold"/>
+			<ItemsControl ItemsSource="{Binding Flashcards}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border BorderBrush="Gray" BorderThickness="1" Margin="4" Padding="4">
+							<StackPanel>
+								<TextBlock Text="{Binding Question}" FontWeight="Bold"/>
+								<TextBlock Text="{Binding Answer}"/>
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</StackPanel>
+	</Grid>
 </UserControl>

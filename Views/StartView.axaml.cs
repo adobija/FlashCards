@@ -1,8 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
-using FlashCards.ViewModels;
 using System;
-using System.Collections.Generic;
+using Avalonia;
 
 namespace FlashCards.Views
 {
@@ -11,57 +10,50 @@ namespace FlashCards.Views
         public StartView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new ViewModels.MainViewModel();
         }
-        private async void OnLoadFromFileClick(object sender, RoutedEventArgs e)
+
+        private void OnAddFlashcardClick(object sender, RoutedEventArgs e)
         {
-            var dlg = new OpenFileDialog()
+            if (DataContext is ViewModels.MainViewModel vm)
             {
-                Filters = new List<FileDialogFilter>()
-        {
-            new FileDialogFilter() { Name = "JSON Files", Extensions = { "json" } }
+                vm.AddFlashcard();
+            }
         }
-            };
-            var result = await dlg.ShowAsync((Window)this.VisualRoot);
-            if (result != null && result.Length > 0)
+
+        private async void OnLoadFromJsonClick(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MainViewModel vm)
             {
-                if (DataContext is MainViewModel vm)
+                var dialog = new OpenFileDialog()
+                {
+                    Filters = { new FileDialogFilter { Name = "JSON Files", Extensions = { "json" } } },
+                    AllowMultiple = false
+                };
+
+                var result = await dialog.ShowAsync((Window)this.VisualRoot);
+                if (result != null && result.Length > 0)
                 {
                     vm.LoadFromJson(result[0]);
                 }
             }
         }
 
-        private void OnAddFlashcardClick(object sender, RoutedEventArgs e)
+        private void OnStartLearningClick(object sender, RoutedEventArgs e)
         {
-            if (DataContext is MainViewModel vm)
+            if (DataContext is ViewModels.MainViewModel vm)
             {
-                vm.AddFlashcard();
+                vm.StartLearning();
+
+                if (this.VisualRoot is Window window &&
+                    window.DataContext is ViewModels.MainWindowViewModel mainWindowVm)
+                {
+                    mainWindowVm.CurrentView = new LearningSessionView()
+                    {
+                        DataContext = vm.Session
+                    };
+                }
             }
-        }
-
-        private async void LoadFromFile_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new OpenFileDialog
-            {
-                Filters = { new FileDialogFilter { Name = "JSON Files", Extensions = { "json" } } }
-            };
-
-            var result = await dialog.ShowAsync((Window)this.VisualRoot);
-            if (result != null && result.Length > 0)
-            {
-                (DataContext as StartViewModel)?.LoadFromJson(result[0]);
-            }
-        }
-
-        private void AddFlashcard_Click(object sender, RoutedEventArgs e)
-        {
-            (DataContext as StartViewModel)?.AddFlashcard();
-        }
-
-        private void StartLearning_Click(object sender, RoutedEventArgs e)
-        {
-            
         }
     }
 }

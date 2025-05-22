@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FlashCards.ViewModels"
+             x:Class="FlashCards.Views.LearningSessionView">
+	<StackPanel Margin="20" Spacing="10">
+		<!-- Active Session Content -->
+		<StackPanel IsVisible="{Binding !IsFinished}">
+			<!-- Question -->
+			<TextBlock Text="{Binding Current.Question}" FontSize="20" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+
+			<!-- Reveal Button -->
+			<Button Content="Reveal Answer"
+                    Click="OnRevealClick"
+                    IsVisible="{Binding !IsAnswerVisible}" HorizontalAlignment="Center"/>
+
+			<!-- Answer -->
+			<TextBlock Text="{Binding Current.Answer}" FontSize="18"
+                      IsVisible="{Binding IsAnswerVisible}" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+
+			<!-- Correct/Incorrect Buttons -->
+			<StackPanel Orientation="Horizontal" Spacing="10"
+                       HorizontalAlignment="Center"
+                       IsVisible="{Binding IsAnswerVisible}">
+				<Button Content="Correct" Click="OnCorrectClick" Width="100"/>
+				<Button Content="Incorrect" Click="OnIncorrectClick" Width="100"/>
+			</StackPanel>
+		</StackPanel>
+
+		<!-- Session Complete -->
+		<StackPanel IsVisible="{Binding IsFinished}" Spacing="10" Margin="0,20">
+			<TextBlock Text="Session Complete!" FontWeight="Bold" FontSize="24"
+                       HorizontalAlignment="Center"/>
+			
+
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+				<Button Content="End Session" Click="OnEndSessionClick" Width="150"/>
+			</StackPanel>
+		</StackPanel>
+	</StackPanel>
+</UserControl>
