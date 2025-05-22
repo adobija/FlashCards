@@ -17,6 +17,7 @@ When clicked "X" button:
 When clicked "✔" button:
 - Shown flashcard will disappear and be thrown into stack of flashcards answered correctly and won't be shown again
 
+*Idea for future development*
 <del>After user will go through all firstly loaded set of flashcards the program will show statistics of flashcards answered correctly and incorrectly
 There will be "End" button to exit program and "Continue" button to continue learning all flashcards that were not answered correctly.
 There will be also "Export" button to export all incorrectly answered flashcards into .json file that can be loaded into app again</del>
