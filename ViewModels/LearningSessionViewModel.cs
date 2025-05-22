@@ -1,59 +1,85 @@
-
-using FlashCards.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using FlashCards.Models;
 
-public class LearningSessionViewModel : ViewModelBase
+namespace FlashCards.ViewModels
 {
-    private Stack<Flashcard> activeStack;
-    private List<Flashcard> incorrect;
-    private Random rand = new();
-
-    public Flashcard Current { get; private set; }
-    public bool IsAnswerVisible { get; private set; }
-
-    public LearningSessionViewModel(IEnumerable<Flashcard> flashcards)
+    public class LearningSessionViewModel : ViewModelBase
     {
-        activeStack = new Stack<Flashcard>(flashcards.OrderBy(_ => rand.Next()));
-        incorrect = new List<Flashcard>();
-        NextCard();
-    }
+        private Stack<Flashcard> _activeStack;
+        private List<Flashcard> _incorrect;
+        private Random _rand = new();
 
-    public void Reveal()
-    {
-        IsAnswerVisible = true;
-        OnPropertyChanged(nameof(IsAnswerVisible));
-    }
-
-    public void MarkCorrect()
-    {
-        NextCard();
-    }
-
-    public void MarkIncorrect()
-    {
-        if (Current != null)
-            incorrect.Add(Current);
-        NextCard();
-    }
-
-    private void NextCard()
-    {
-        IsAnswerVisible = false;
-
-        if (activeStack.Count == 0 && incorrect.Count > 0)
+        private Flashcard? _current;
+        public Flashcard? Current
         {
-            activeStack = new Stack<Flashcard>(incorrect.OrderBy(_ => rand.Next()));
-            incorrect.Clear();
+            get => _current;
+            private set
+            {
+                _current = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsFinished));
+            }
         }
 
-        Current = activeStack.Count > 0 ? activeStack.Pop() : null;
-        OnPropertyChanged(nameof(Current));
-        OnPropertyChanged(nameof(IsAnswerVisible));
+        private bool _isAnswerVisible;
+        public bool IsAnswerVisible
+        {
+            get => _isAnswerVisible;
+            private set
+            {
+                _isAnswerVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int CorrectCount { get; private set; }
+        public int IncorrectCount => _incorrect.Count;
+        public IEnumerable<Flashcard> IncorrectFlashcards => _incorrect;
+        public bool IsFinished => Current == null;
+
+        public LearningSessionViewModel(IEnumerable<Flashcard> flashcards)
+        {
+            _activeStack = new Stack<Flashcard>(flashcards.OrderBy(_ => _rand.Next()));
+            _incorrect = new List<Flashcard>();
+            NextCard();
+        }
+
+        public void Reveal()
+        {
+            IsAnswerVisible = true;
+        }
+
+        public void MarkCorrect()
+        {
+            CorrectCount++;
+            OnPropertyChanged(nameof(CorrectCount));
+            NextCard();
+        }
+
+        public void MarkIncorrect()
+        {
+            if (Current != null)
+                _incorrect.Add(Current);
+            OnPropertyChanged(nameof(IncorrectCount));
+            NextCard();
+        }
+
+        private void NextCard()
+        {
+            IsAnswerVisible = false;
+
+            if (_activeStack.Count == 0 && _incorrect.Count > 0)
+            {
+                _activeStack = new Stack<Flashcard>(_incorrect.OrderBy(_ => _rand.Next()));
+                _incorrect.Clear();
+                OnPropertyChanged(nameof(IncorrectCount));
+            }
+
+            Current = _activeStack.Count > 0 ? _activeStack.Pop() : null;
+        }
     }
-
-    public bool IsFinished => Current == null && incorrect.Count == 0;
 }
-

@@ -1,8 +1,10 @@
 ﻿using FlashCards.Models;
+using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Text.Json;
 
 namespace FlashCards.ViewModels
@@ -10,7 +12,7 @@ namespace FlashCards.ViewModels
     public class StartViewModel : ViewModelBase
     {
         public ObservableCollection<Flashcard> Flashcards { get; } = new();
-
+        public ReactiveCommand<Unit, Unit> AddFlashcardCommand { get; }
         private string _newQuestion;
         public string NewQuestion
         {
