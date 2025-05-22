@@ -43,7 +43,17 @@ namespace FlashCards.ViewModels
 
         public LearningSessionViewModel(IEnumerable<Flashcard> flashcards)
         {
-            _activeStack = new Stack<Flashcard>(flashcards.OrderBy(_ => _rand.Next()));
+            // Enhanced randomization with Fisher-Yates shuffle
+            var shuffledCards = flashcards.ToList();
+            for (int i = shuffledCards.Count - 1; i > 0; i--)
+            {
+                int j = _rand.Next(i + 1);
+                var temp = shuffledCards[i];
+                shuffledCards[i] = shuffledCards[j];
+                shuffledCards[j] = temp;
+            }
+
+            _activeStack = new Stack<Flashcard>(shuffledCards);
             _incorrect = new List<Flashcard>();
             NextCard();
         }
@@ -74,12 +84,16 @@ namespace FlashCards.ViewModels
 
             if (_activeStack.Count == 0 && _incorrect.Count > 0)
             {
-                _activeStack = new Stack<Flashcard>(_incorrect.OrderBy(_ => _rand.Next()));
+                // Shuffle incorrect cards before re-adding them
+                var shuffledIncorrect = _incorrect.OrderBy(_ => _rand.Next()).ToList();
+                _activeStack = new Stack<Flashcard>(shuffledIncorrect);
                 _incorrect.Clear();
                 OnPropertyChanged(nameof(IncorrectCount));
             }
 
             Current = _activeStack.Count > 0 ? _activeStack.Pop() : null;
         }
+
+
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 using Avalonia;
+using System.Linq;
 
 namespace FlashCards.Views
 {
@@ -42,8 +43,9 @@ namespace FlashCards.Views
         {
             if (DataContext is ViewModels.LearningSessionViewModel vm && vm.IncorrectCount > 0)
             {
-                // Create a new session with only incorrect cards
-                var newSession = new ViewModels.LearningSessionViewModel(vm.IncorrectFlashcards);
+                // Shuffle incorrect cards before continuing
+                var shuffledIncorrect = vm.IncorrectFlashcards.OrderBy(_ => new Random().Next()).ToList();
+                var newSession = new ViewModels.LearningSessionViewModel(shuffledIncorrect);
 
                 if (this.VisualRoot is Window window &&
                     window.DataContext is ViewModels.MainWindowViewModel mainWindowVm)
