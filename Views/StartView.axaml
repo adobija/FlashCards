@@ -13,8 +13,8 @@
 
 			<Button Content="Add Flashcard" Click="OnAddFlashcardClick"/>
 			<Separator/>
-			<TextBlock Text="Warning!"/>
-			<TextBlock Text="Loading flashcards from file will erase already existing flashcards!"/>
+			<TextBlock Classes="warning" Text="Warning!"/>
+			<TextBlock Classes="warning" Text="Loading flashcards from file will erase already existing flashcards!"/>
 			<Button Content="Load from JSON" Click="OnLoadFromJsonClick"/>
 			<Separator/>
 
