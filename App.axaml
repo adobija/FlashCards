@@ -13,9 +13,4 @@
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
-
-	<Application.Resources>
-		<converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
-	</Application.Resources>
-	
 </Application>
