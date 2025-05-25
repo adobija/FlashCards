@@ -1,9 +1,8 @@
-
-namespace FlashCards.Models;
-
-public class Flashcard
+namespace FlashCards.Models
 {
-    public string Question { get; set; }
-    public string Answer { get; set; }
-    public bool IsCorrectlyAnswered { get; set; } = false;
+    public class Flashcard
+    {
+        public string Question { get; set; }
+        public string Answer { get; set; }
+    }
 }
